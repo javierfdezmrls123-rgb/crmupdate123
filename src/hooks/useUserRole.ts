@@ -19,6 +19,7 @@ export const useUserRole = () => {
     const fetchUserRole = async () => {
       // Early return if user is null
       if (!user) {
+        console.log('No user found, skipping role fetch');
         setLoading(false);
         return;
       }
@@ -41,6 +42,7 @@ export const useUserRole = () => {
       try {
         console.log('Fetching user role for:', user.email);
         console.log('User ID:', user.id);
+        console.log('User email confirmed:', user.email_confirmed_at);
         
         // First, try to get existing role
         let { data, error } = await supabase
@@ -89,10 +91,25 @@ export const useUserRole = () => {
                 console.log('Found existing role after duplicate:', existingRole.role);
                 setUserRole(existingRole);
               } else {
-                throw insertError;
+                console.log('Setting fallback role due to duplicate error');
+                setUserRole({
+                  id: 'fallback-role',
+                  user_id: user.id,
+                  email: user.email || '',
+                  role: user.email === 'ilia@envaire.com' || user.email === 'javier@envaire.com' ? 'admin' : 'salesman',
+                  created_at: new Date().toISOString()
+                });
               }
             } else {
-              throw insertError;
+              console.error('Insert error:', insertError);
+              // Set fallback role instead of throwing
+              setUserRole({
+                id: 'fallback-role',
+                user_id: user.id,
+                email: user.email || '',
+                role: user.email === 'ilia@envaire.com' || user.email === 'javier@envaire.com' ? 'admin' : 'salesman',
+                created_at: new Date().toISOString()
+              });
             }
           } else {
             console.log('Successfully created new role:', newRole.role);
@@ -100,7 +117,14 @@ export const useUserRole = () => {
           }
         } else {
           console.error('Database error:', error);
-          throw error;
+          // Set fallback role instead of throwing
+          setUserRole({
+            id: 'fallback-role',
+            user_id: user.id,
+            email: user.email || '',
+            role: user.email === 'ilia@envaire.com' || user.email === 'javier@envaire.com' ? 'admin' : 'salesman',
+            created_at: new Date().toISOString()
+          });
         }
       } catch (error) {
         console.error('Network/Connection error:', error);
