@@ -1,0 +1,26 @@
+{
+  "name": "Envaire CRM",
+  "short_name": "Envaire",
+  "description": "Professional Lead Management System",
+  "icons": [
+    {
+      "src": "/ENVAIRE LOGO.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/ENVAIRE LOGO.png", 
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/ENVAIRE LOGO.png",
+      "sizes": "180x180", 
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#22c55e",
+  "background_color": "#0f172a",
+  "display": "standalone",
+  "start_url": "/"
+}
