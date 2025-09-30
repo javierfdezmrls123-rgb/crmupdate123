@@ -1,0 +1,55 @@
+# Quick Fix for "Error saving lead" Issue
+
+## The Problem
+When you try to save a lead, you see this error:
+```
+Error saving lead. Please try again.
+```
+
+## The Solution (5 Minutes)
+
+### 1. Open Supabase Dashboard
+Go to: https://supabase.com/dashboard
+
+### 2. Run the Fix Script
+1. Click **SQL Editor** (left sidebar)
+2. Click **New Query**
+3. Copy and paste the entire contents of `MIGRATION_FIX.sql`
+4. Click **Run**
+
+### 3. Refresh Your App
+1. Close all browser tabs
+2. Clear browser cache or use Incognito mode
+3. Reopen your application
+4. Try saving a lead - it should work now!
+
+## What This Fixes
+
+- ✅ Creates the `user_roles` table with proper permissions
+- ✅ Ensures the `leads` table has all required columns
+- ✅ Sets up correct security policies (RLS)
+- ✅ Auto-assigns roles to users
+- ✅ Makes ilia@envaire.com and javier@envaire.com admins
+
+## Verify It Worked
+
+After running the script, check these:
+
+```sql
+-- Should show your user role
+SELECT * FROM public.user_roles;
+
+-- Should show all lead columns
+SELECT column_name FROM information_schema.columns WHERE table_name = 'leads';
+```
+
+## Still Not Working?
+
+1. Check browser console (F12 key) for error messages
+2. Check Supabase logs in dashboard
+3. Verify your `.env` file has correct database credentials
+4. Make sure you're logged in with a valid account
+
+---
+
+**That's it!** Your CRM should now save leads without errors.

@@ -117,6 +117,12 @@ export const useUserRole = () => {
           }
         } else {
           console.error('Database error:', error);
+
+          // Check if it's a table not found error (PGRST205)
+          if (error?.code === 'PGRST205' || error?.message?.includes('Could not find the table')) {
+            console.warn('user_roles table not found in database. Using fallback role assignment.');
+          }
+
           // Set fallback role instead of throwing
           setUserRole({
             id: 'fallback-role',
